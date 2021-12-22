@@ -21,8 +21,8 @@ public class PlayerContext : Context
 
     private void set_allStates()
     {
-        allStates[PlayerStateKey.Standing] = new Standing();
-        allStates[PlayerStateKey.Walking] = new Walking();
+        allStates[PlayerStateKey.Standing] = new Standing(this);
+        allStates[PlayerStateKey.Walking] = new Walking(this);
         allStates[PlayerStateKey.InAir] = new InAir();
     } 
     
@@ -40,11 +40,12 @@ public class PlayerContext : Context
 
     private class Standing: State
     {
-        Transform currPos;
+        private Transform currPos;
 
-        public Standing()
+        public Standing(Context currContext)
         {
-            currPos = currContext.GetComponent<Transform>();//not working, prob because not mono behaviour
+            set_currContext(currContext);
+            currPos = currContext.GetComponent<Transform>();
         }
         public override void HandleUpdate()
         {
