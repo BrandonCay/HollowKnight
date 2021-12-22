@@ -4,15 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-class PlayerContext : Context
+public class PlayerContext : Context
 {
+
+    Transform testCurPos;
+   
     private void Start()
     {
-        transitionTo(new Standing(GetComponent<Transform>().position));
+        const int numberOfStates = 10;
+        allStates = new IState[numberOfStates];
+        testCurPos = GetComponent<Transform>();
+        Debug.Log($"{testCurPos.ToString()}");
+        set_allStates();
+        transitionTo(ref allStates[PlayerStateKey.Standing]);
     }
-    
-    override public void Update()
+
+    private void set_allStates()
     {
+        allStates[PlayerStateKey.Standing] = new Standing();
+        allStates[PlayerStateKey.Walking] = new Walking();
+        allStates[PlayerStateKey.InAir] = new InAir();
+    } 
+    
+    public override void Update()
+    {
+        Debug.Log($"{testCurPos.ToString()}");
         currState.HandleUpdate();
     }
 
@@ -20,29 +36,36 @@ class PlayerContext : Context
     {
         currState.HandleFixedUpdate();
     }
-
     
-    public class Standing: State
+
+    private class Standing: State
     {
-        Vector2 pos;
-        public Standing(Vector2 newPos)
+        Transform currPos;
+
+        public Standing()
         {
-            pos = newPos;
+            currPos = currContext.GetComponent<Transform>();//not working, prob because not mono behaviour
         }
         public override void HandleUpdate()
         {
+            Debug.Log($"State: {currPos.ToString()}");
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log($"pos: {pos.ToString()}");
                 Jump();
-                Rigidbody2D rb = currContext.GetComponent<Rigidbody2D>();
-                currContext.transitionTo(new InAir(pos, rb));
             }
         }
 
         private void Jump()
         {
-            Jumper player;
+            /*
+            Jumper player = new Jumper();
+            Debug.Log($"pos: {curPos.ToString()}");
+            Jump();
+            Rigidbody2D rb = currContext.GetComponent<Rigidbody2D>();
+            InAir s = currContext.inair;
+            currContext.transitionTo();
+            */
+
         }
         public override void HandleFixedUpdate()
         {
@@ -51,7 +74,7 @@ class PlayerContext : Context
 
     }
 
-    public class Walking: State
+    private class Walking: State
     {
         private Vector2 pos;
         private Rigidbody2D rb;
@@ -65,16 +88,20 @@ class PlayerContext : Context
         }
     }
 
-    public class InAir: State
+    private class InAir: State
     {
         
         private Vector2 currPos;
         private Rigidbody2D rb;
         private Jumper player;
 
-        public InAir(Vector2 pos , Rigidbody2D rb)
+        public InAir()
         {
-            this.currPos = pos;
+
+        }
+        public InAir(Vector2 currPos , Rigidbody2D rb)
+        {
+            this.currPos = currPos;
             this.rb = rb;
             player = new Jumper();
         }
@@ -89,6 +116,17 @@ class PlayerContext : Context
             rb.MovePosition(newPos);
             currPos = newPos;
         }
+    }
+
+    protected class PlayerStateKey:StateKey
+    {
+        public static PlayerStateKey
+            Standing = new PlayerStateKey(0),
+            Walking = new PlayerStateKey(1),
+            InAir = new PlayerStateKey(2);
+        public PlayerStateKey(int val) : base(val) {}
+
+
     }
     
 }

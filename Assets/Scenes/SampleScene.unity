@@ -452,11 +452,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d437dda2453c377409c45d15c0dbf346, type: 3}
+  m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  z: -10
-  y: 2
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -619,7 +617,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 695365387}
-  - component: {fileID: 695365384}
   - component: {fileID: 695365386}
   - component: {fileID: 695365385}
   - component: {fileID: 695365388}
@@ -630,22 +627,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &695365384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 695365383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b022c57cf21ab4e4187d7e28e258e59b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightVel: 0
-  upVel: 0
-  runSpeed: 5
-  jmpH: 3
 --- !u!50 &695365385
 Rigidbody2D:
   serializedVersion: 4
@@ -719,13 +700,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 695365383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0cd6dd72f869c24898fc5165a6839b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e5fc68249961964a8e0d5c1da051722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pm: {fileID: 695365384}
-  xIndex: 0
-  yIndex: 0
-  collideCnt: 0
 --- !u!1 &734742891
 GameObject:
   m_ObjectHideFlags: 0
