@@ -7,45 +7,53 @@ using System;
 
 abstract public class Context: MonoBehaviour
 {
-    protected IState[] allStates;
-    protected IState currState;
+    protected State[] allStates;
+    protected State currState;
     protected int[] instanceCountForEachState;
 
     abstract public void Update();
     abstract public void FixedUpdate();
 
-    public void transitionTo(ref IState currState)
+    public void transitionTo(in StateKey key)
+    {
+        this.currState = allStates[key];
+    }
+    public void transitionTo(ref State currState)
     {
         this.currState = currState;
-        this.currState.set_currContext(this);
     }
 
-
-    public interface IState
+    public void transitionTo(ref State currState, Context thisContext)
     {
-        public void HandleUpdate();
-        public void HandleFixedUpdate();
-        public void set_currContext(Context newContext);
+        this.currState = currState;
+        this.currState.set_currContext(thisContext);
     }
-    protected abstract class State: IState
+
+    public abstract class State
     {
         protected Context currContext;
         protected int maxInstanceCount = 1;
+
+        public State(Context currContext)
+        {
+            set_currContext(currContext);
+        }
         abstract public void HandleUpdate();
         abstract public void HandleFixedUpdate();
-        private void isThereTooManyInstances(int currInstanceCount)
-        {
-            if (currInstanceCount > maxInstanceCount)
-                throw new ArgumentException("Too many instances for this state");
-        }
+
         public void set_currContext(Context newContext)
         {
             currContext = newContext;
         }
 
+        protected void isThereTooManyInstances(int currInstanceCount)
+        {
+            if (currInstanceCount > maxInstanceCount)
+                throw new ArgumentException("Too many instances for this state");
+        }
 
     }
-    abstract protected class StateKey
+    abstract public class StateKey//prevent public access to keys while allowing context to use keys
     {
         public int Value { get; private set; }
         public override string ToString()
@@ -58,10 +66,21 @@ abstract public class Context: MonoBehaviour
             this.Value = value;
         }
 
-        public static implicit operator int (StateKey value)
+        public static implicit operator int (in StateKey value)
         {
             return value.Value;
         }
+
+        /* deprecated: use transitionTo. Left just in case
+        public static T insertStateKeyIntoArray<T>(in StateKey key, in T [] arr)//
+        {
+            int index = key, arrLength = arr.Length;
+            if (index >= arrLength || index < 0 )
+                throw new IndexOutOfRangeException($"length of array = {arrLength}; index = {index}");
+
+            return arr[index];
+        }
+        */
     }
 
 }

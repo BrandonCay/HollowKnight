@@ -9,8 +9,6 @@ public class Jumper
 
     public Jumper()
     {
-        maxHeight = 4f;
-        acceleration = -9f;
 
     }
 
