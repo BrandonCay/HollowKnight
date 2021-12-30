@@ -50,17 +50,10 @@ public class PlayerContext : Context
             }
         }
 
-        private void Jump()
+        public void Jump()
         {
             currContext.transitionTo(PlayerStateKey.InAir);
-            /*
-            Jumper player = new Jumper();
-            Debug.Log($"pos: {curPos.ToString()}");
-            Jump();
-            Rigidbody2D rb = currContext.GetComponent<Rigidbody2D>();
-            InAir s = currContext.inair;
-            currContext.transitionTo();
-            */
+            
         }
         public override void HandleFixedUpdate()
         {
@@ -107,6 +100,13 @@ public class PlayerContext : Context
             Vector2 currPos = this.currPos.position, 
                     newPos =  currPos + new Vector2(0, (1f * Time.fixedDeltaTime));
             rb.MovePosition(newPos);
+        }
+
+        public void jumped()
+        {
+            Jumper player = new Jumper();
+            Jump();
+
         }
     }
 
