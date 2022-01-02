@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 public class PlayerContext : Context
 {   
+    //hide member but keep open to access to nested
     private void Start()
     {
         const int numberOfStates = 10;
@@ -30,14 +31,24 @@ public class PlayerContext : Context
     {
         currState.HandleFixedUpdate();
     }
-    
 
-    private class Standing: State
+
+    abstract private class PlayerState : State
+    {
+        protected PlayerContext currContext;
+
+        protected void set_currContext(PlayerContext newContext)
+        {
+            currContext = newContext;
+        }
+    }
+    private class Standing: PlayerState
     {
         private Transform currPos;
 
-        public Standing(Context currContext): base(currContext){
-            currPos = currContext.GetComponent<Transform>();
+        public Standing(PlayerContext context)
+        {
+            set_currContext(context);
         }
 
 
@@ -46,6 +57,7 @@ public class PlayerContext : Context
             Debug.Log($"State: {currPos.position.ToString()}");
             if (Input.GetKeyDown(KeyCode.Space))
             {
+
                 Jump();
             }
         }
@@ -53,7 +65,7 @@ public class PlayerContext : Context
         public void Jump()
         {
             currContext.transitionTo(PlayerStateKey.InAir);
-            
+            currContext.currState.
         }
         public override void HandleFixedUpdate()
         {
@@ -62,12 +74,15 @@ public class PlayerContext : Context
 
     }
 
-    private class Walking: State
+    private class Walking: PlayerState
     {
         private Vector2 pos;
         private Rigidbody2D rb;
 
-        public Walking(Context currContext) : base(currContext) { }
+        public Walking(Context currContext)
+        {
+
+        }
         public override void HandleUpdate()
         {
             
@@ -78,14 +93,14 @@ public class PlayerContext : Context
         }
     }
 
-    private class InAir: State
+    private class InAir: PlayerState
     {
         
         private Rigidbody2D rb;
         private Jumper player;
         private Transform currPos;
 
-        public InAir(Context currContext) : base(currContext) {
+        public InAir(PlayerContext currContext) {
             currPos = currContext.GetComponent<Transform > ();
             rb = currContext.GetComponent<Rigidbody2D>();
         }
@@ -102,10 +117,8 @@ public class PlayerContext : Context
             rb.MovePosition(newPos);
         }
 
-        public void jumped()
+        public void set_properties(Jumper player)
         {
-            Jumper player = new Jumper();
-            Jump();
 
         }
     }
@@ -122,3 +135,4 @@ public class PlayerContext : Context
     }
     
 }
+

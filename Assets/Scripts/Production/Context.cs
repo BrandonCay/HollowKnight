@@ -7,7 +7,7 @@ using System;
 
 abstract public class Context: MonoBehaviour
 {
-    protected State[] allStates;
+    protected State[] allStates { get; set; }
     protected State currState;
     protected int[] instanceCountForEachState;
 
@@ -31,25 +31,23 @@ abstract public class Context: MonoBehaviour
 
     public abstract class State
     {
-        protected Context currContext;
         protected int maxInstanceCount = 1;
-
-        public State(Context currContext)
-        {
-            set_currContext(currContext);
-        }
         abstract public void HandleUpdate();
         abstract public void HandleFixedUpdate();
 
         public void set_currContext(Context newContext)
         {
-            currContext = newContext;
+            throw new NotImplementedException();
         }
-
         protected void isThereTooManyInstances(int currInstanceCount)
         {
             if (currInstanceCount > maxInstanceCount)
                 throw new ArgumentException("Too many instances for this state");
+        }
+
+        public void set_properties()
+        {
+            throw new NotImplementedException();
         }
 
     }
