@@ -5,7 +5,7 @@ using System;
 
 
 
-abstract public class Context: MonoBehaviour
+abstract public class Context<ThisContext>: MonoBehaviour
 {
     protected State currState;
 
@@ -16,23 +16,17 @@ abstract public class Context: MonoBehaviour
     {
         this.currState = currState;
     }
-
-    public void transitionTo(ref State currState, Context thisContext)
-    {
-        this.currState = currState;
-        this.currState.set_currContext(thisContext);
-    }
-
     public abstract class State
     {
+        protected ThisContext currContext;
         protected int maxInstanceCount = 1;
         abstract public void HandleUpdate();
         abstract public void HandleFixedUpdate();
 
-        public void set_currContext(Context currContext)
+        public void set_currContext(in ThisContext currContext)
         {
-            throw new NotImplementedException();
-        }
+            this.currContext = currContext;  
+        } 
         protected void isThereTooManyInstances(int currInstanceCount)
         {
             if (currInstanceCount > maxInstanceCount)

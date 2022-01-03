@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-public class PlayerContext : Context
+public class PlayerContext : Context<PlayerContext>
 {
     //hide member but keep open to access to nested
     private Standing standingState;
@@ -33,18 +33,7 @@ public class PlayerContext : Context
         currState.HandleFixedUpdate();
     }
 
-
-    abstract private class PlayerState : State
-    {
-        protected PlayerContext currContext;
-
-        protected void set_currContext(PlayerContext newContext)
-        {
-            currContext = newContext;
-        }
-    }
-
-    private class Standing: PlayerState
+    protected class Standing: State
     {
         private Transform currPos;
         private Rigidbody2D rb;
@@ -72,6 +61,7 @@ public class PlayerContext : Context
             currContext.inairState.set_properties(player, 0f, player.calcInitialVelocityToJump());
             currContext.transitionTo(currContext.inairState);
         }
+
         public override void HandleFixedUpdate()
         {
             
@@ -84,7 +74,7 @@ public class PlayerContext : Context
 
     }
 
-    private class Walking: PlayerState
+    protected class Walking: State
     {
         private Vector2 pos;
         private Rigidbody2D rb;
@@ -104,7 +94,7 @@ public class PlayerContext : Context
         }
     }
 
-    private class InAir: PlayerState
+    protected class InAir: State
     {
         
         private Rigidbody2D rb;
@@ -119,7 +109,7 @@ public class PlayerContext : Context
             gravityAcceleration = -9.81f;
         }
 
-    public override void HandleUpdate()
+        public override void HandleUpdate()
         {
 
         }
@@ -132,7 +122,7 @@ public class PlayerContext : Context
             float currPosX = this.currPos.position.x , currPosY = this.currPos.position.y,
                 nextPosX = currPosX + currXvel * Time.fixedDeltaTime , nextPosY = currPosY + currYvel * Time.fixedDeltaTime; 
 
-            Vector2 positionAfterFrame =  new Vector2( nextPosX , next);
+            Vector2 positionAfterFrame =  new Vector2( nextPosX , nextPosY);
 
             rb.MovePosition(positionAfterFrame);
         }
