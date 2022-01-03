@@ -43,13 +43,17 @@ public class PlayerContext : Context
             currContext = newContext;
         }
     }
+
     private class Standing: PlayerState
     {
         private Transform currPos;
+        private Rigidbody2D rb;
 
         public Standing(PlayerContext context)
         {
             set_currContext(context);
+            currPos = currContext.GetComponent<Transform>();
+            rb = currContext.GetComponent<Rigidbody2D>();
         }
 
 
@@ -58,20 +62,19 @@ public class PlayerContext : Context
             Debug.Log($"State: {currPos.position.ToString()}");
             if (Input.GetKeyDown(KeyCode.Space))
             {
-
                 Jump();
             }
         }
 
-        private void Jump()
+        protected void Jump()
         {
             Jumper player = new Jumper();
-            currContext.inairState.set_properties(player);
-            currContext.transitionTo(currContext.inairState);  
+            currContext.inairState.set_properties(player, 0f, player.calcInitialVelocityToJump());
+            currContext.transitionTo(currContext.inairState);
         }
         public override void HandleFixedUpdate()
         {
-
+            
         }
 
         public void set_properties()
@@ -86,7 +89,7 @@ public class PlayerContext : Context
         private Vector2 pos;
         private Rigidbody2D rb;
 
-        public Walking(Context currContext)
+        public Walking(PlayerContext currContext)
         {
 
         }
@@ -97,6 +100,7 @@ public class PlayerContext : Context
 
         public override void HandleFixedUpdate()
         {
+
         }
     }
 
@@ -106,27 +110,38 @@ public class PlayerContext : Context
         private Rigidbody2D rb;
         private Jumper player;
         private Transform currPos;
+        private float currXvel, currYvel, gravityAcceleration;
 
         public InAir(PlayerContext currContext) {
-            currPos = currContext.GetComponent<Transform > ();
+            this.currContext = currContext; 
+            currPos = currContext.GetComponent<Transform >();
             rb = currContext.GetComponent<Rigidbody2D>();
+            gravityAcceleration = -9.81f;
         }
-        public override void HandleUpdate()
+
+    public override void HandleUpdate()
         {
+
         }
 
         //need to create unittest
         public override void HandleFixedUpdate()
         {
-            Debug.Log($"State InAir: {this.currPos.position}");
-            Vector2 currPos = this.currPos.position, 
-                    newPos =  currPos + new Vector2(0, (1f * Time.fixedDeltaTime));
-            rb.MovePosition(newPos);
+            currYvel = currYvel + gravityAcceleration * Time.fixedDeltaTime;
+
+            float currPosX = this.currPos.position.x , currPosY = this.currPos.position.y,
+                nextPosX = currPosX + currXvel * Time.fixedDeltaTime , nextPosY = currPosY + currYvel * Time.fixedDeltaTime; 
+
+            Vector2 positionAfterFrame =  new Vector2( nextPosX , next);
+
+            rb.MovePosition(positionAfterFrame);
         }
 
-        public void set_properties(Jumper player)
+        public void set_properties(Jumper player, float currXvel, float currYvel)
         {
-
+            this.player = player;
+            this.currXvel = currXvel;
+            this.currYvel = currYvel;
         }
     }
 
