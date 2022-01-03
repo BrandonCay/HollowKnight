@@ -5,21 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 public class PlayerContext : Context
-{   
+{
     //hide member but keep open to access to nested
+    private Standing standingState;
+    private Walking walkingState;
+    private InAir inairState; 
     private void Start()
     {
-        const int numberOfStates = 10;
-        allStates = new State[numberOfStates];
         set_allStates();
-        transitionTo(ref allStates[PlayerStateKey.Standing]);
+        transitionTo(standingState);
     }
 
     private void set_allStates()
     {
-        allStates[PlayerStateKey.Standing] = new Standing(this);
-        allStates[PlayerStateKey.Walking] = new Walking(this);
-        allStates[PlayerStateKey.InAir] = new InAir(this);
+        standingState = new Standing(this);
+        walkingState = new Walking(this);
+        inairState = new InAir(this);
     }
     
     public override void Update()
@@ -62,14 +63,20 @@ public class PlayerContext : Context
             }
         }
 
-        public void Jump()
+        private void Jump()
         {
-            currContext.transitionTo(PlayerStateKey.InAir);
-            currContext.currState.
+            Jumper player = new Jumper();
+            currContext.inairState.set_properties(player);
+            currContext.transitionTo(currContext.inairState);  
         }
         public override void HandleFixedUpdate()
         {
 
+        }
+
+        public void set_properties()
+        {
+            
         }
 
     }

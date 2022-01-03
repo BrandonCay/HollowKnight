@@ -7,18 +7,12 @@ using System;
 
 abstract public class Context: MonoBehaviour
 {
-    protected State[] allStates { get; set; }
     protected State currState;
-    protected int[] instanceCountForEachState;
 
     abstract public void Update();
     abstract public void FixedUpdate();
 
-    public void transitionTo(in StateKey key)
-    {
-        this.currState = allStates[key];
-    }
-    public void transitionTo(ref State currState)
+    public void transitionTo(in State currState)
     {
         this.currState = currState;
     }
@@ -35,7 +29,7 @@ abstract public class Context: MonoBehaviour
         abstract public void HandleUpdate();
         abstract public void HandleFixedUpdate();
 
-        public void set_currContext(Context newContext)
+        public void set_currContext(Context currContext)
         {
             throw new NotImplementedException();
         }
@@ -43,11 +37,6 @@ abstract public class Context: MonoBehaviour
         {
             if (currInstanceCount > maxInstanceCount)
                 throw new ArgumentException("Too many instances for this state");
-        }
-
-        public void set_properties()
-        {
-            throw new NotImplementedException();
         }
 
     }
