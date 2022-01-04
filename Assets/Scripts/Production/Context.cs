@@ -5,44 +5,39 @@ using System;
 
 
 
-abstract public class Context<ThisContext, ThisState>: MonoBehaviour
+abstract public class Context: MonoBehaviour
 {
-    protected ThisState currState;
+    protected State currState;
 
     abstract public void Update();
     abstract public void FixedUpdate();
 
-    public void transitionTo(in ThisState currState)
+    public void transitionTo(in State currState)
     {
         this.currState = currState;
     }
 
-    public abstract class State<ThisState>
+    public abstract class State
     {
-        protected ThisContext currContext;
         protected int maxInstanceCount = 1;
-        protected Command<ThisState> command;
-        abstract public void HandleUpdate();
-        abstract public void HandleFixedUpdate();
 
-        public void set_currContext(in ThisContext currContext)
+        protected Command commandToExecute; 
+        public abstract void HandleUpdate();
+        public abstract void HandleFixedUpdate();
+
+        protected void set_command(Command nextCommand)
         {
-            this.currContext = currContext;  
-        } 
+            commandToExecute = nextCommand;
+        }
         protected void isThereTooManyInstances(int currInstanceCount)
         {
             if (currInstanceCount > maxInstanceCount)
                 throw new ArgumentException("Too many instances for this state");
         }
 
-        protected abstract class Command<ThisState>
+        protected interface Command
         {
-            protected ThisState currState;
-            public Command(ThisState currState){
-                this.currState = currState;
-            }
-            public abstract void execute();
-
+            abstract public void execute();
         }
 
 

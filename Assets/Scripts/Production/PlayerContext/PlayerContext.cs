@@ -4,25 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-public class PlayerContext : Context<PlayerContext>
+public class PlayerContext : Context
 {
     //hide member but keep open to access to nested
-    private Standing standingState;
-    private Walking walkingState;
-    private InAir inairState; 
+    PlayerComponentContainer components; 
     private void Start()
     {
-        set_allStates();
-        transitionTo(standingState);
+        transitionTo(new Standing());
     }
 
-    private void set_allStates()
+    class PlayerComponentContainer
     {
-        standingState = new Standing(this);
-        walkingState = new Walking(this);
-        inairState = new InAir(this);
+        public Transform transform;
+        public Rigidbody2D rigidbody2D;
     }
-    
     public override void Update()
     {
         currState.HandleUpdate();
@@ -33,7 +28,17 @@ public class PlayerContext : Context<PlayerContext>
         currState.HandleFixedUpdate();
     }
 
-    protected class Standing: State<Standing>
+    protected abstract class PlayerState: State
+    {
+        protected PlayerContext currContext;
+
+        public void set_currContext(PlayerContext newContext)
+        {
+            currContext = newContext;
+        }
+    }
+
+    protected class Standing: PlayerState
     {
         private Transform currPos;
         private Rigidbody2D rb;
@@ -41,49 +46,57 @@ public class PlayerContext : Context<PlayerContext>
         public Standing(PlayerContext context)
         {
             set_currContext(context);
-            currPos = currContext.GetComponent<Transform>();
-            rb = currContext.GetComponent<Rigidbody2D>();
+            currPos = currContext.components.transform;
+            rb = currContext.components.rigidbody2D;
         }
 
 
         public override void HandleUpdate()
         {
-            Debug.Log($"State: {currPos.position.ToString()}");
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Jump();
+
             }
         }
 
-        protected void Jump()
+        protected abstract class PlayerCommand: Command
         {
+            protected Standing currState;
+
+            public PlayerCommand(Standing newState)
+            {
+                currState = newState;
+            }
+
+            abstract public void execute();
         }
 
-        protected class JumpCommand : Command<Standing>
+        protected class NoCommand : PlayerCommand {
+            public NoCommand(Standing newState) : base(newState) { }
+            
+        }
+            
+
+        protected class JumpCommand : PlayerCommand
         {
-            JumpCommand(Standing s) : base(s) { }                
+            JumpCommand(Standing s):base(s) { }            
+            
             override public void execute()
             {
                 Jumper player = new Jumper();
-                currState.currContext.inairState.set_properties(player, 0f, player.calcInitialVelocityToJump());
-                currState.currContext.transitionTo(currState.currContext.inairState);
+                currState.currContext.transitionTo(new InAir(currState.currContext, new Jumper(), 0f, player.calcInitialVelocityToJump()));
             }
 
         }
         public override void HandleFixedUpdate()
         {
             
-        }
-
-        public void set_properties()
-        {
-            
-        }
-        
+        }        
         
     }
 
-    protected class Walking: State
+    protected class Walking: PlayerState
     {
 
         class JumpCommand
@@ -108,7 +121,7 @@ public class PlayerContext : Context<PlayerContext>
         }
     }
 
-    protected class InAir: State
+    protected class InAir: PlayerState
     {
         
         private Rigidbody2D rb;
@@ -117,9 +130,17 @@ public class PlayerContext : Context<PlayerContext>
         private float currXvel, currYvel, gravityAcceleration;
 
         public InAir(PlayerContext currContext) {
-            this.currContext = currContext; 
-            currPos = currContext.GetComponent<Transform >();
-            rb = currContext.GetComponent<Rigidbody2D>();
+            this.currContext = currContext;
+            currPos = currContext.components.transform;
+            rb = currContext.components.rigidbody2D;
+            gravityAcceleration = -9.81f;
+        }
+
+        public InAir(PlayerContext currContext, Jumper player, float currXvel, float currYvel):this(currContext)
+        {
+            this.player = player;
+            this.currXvel = currXvel;
+            this.currYvel = currYvel;
             gravityAcceleration = -9.81f;
         }
 
@@ -141,12 +162,6 @@ public class PlayerContext : Context<PlayerContext>
             rb.MovePosition(positionAfterFrame);
         }
 
-        public void set_properties(Jumper player, float currXvel, float currYvel)
-        {
-            this.player = player;
-            this.currXvel = currXvel;
-            this.currYvel = currYvel;
-        }
     }
 
     protected class PlayerStateKey:StateKey
