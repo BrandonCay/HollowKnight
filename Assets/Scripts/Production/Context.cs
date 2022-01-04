@@ -5,21 +5,23 @@ using System;
 
 
 
-abstract public class Context<ThisContext>: MonoBehaviour
+abstract public class Context<ThisContext, ThisState>: MonoBehaviour
 {
-    protected State currState;
+    protected ThisState currState;
 
     abstract public void Update();
     abstract public void FixedUpdate();
 
-    public void transitionTo(in State currState)
+    public void transitionTo(in ThisState currState)
     {
         this.currState = currState;
     }
-    public abstract class State
+
+    public abstract class State<ThisState>
     {
         protected ThisContext currContext;
         protected int maxInstanceCount = 1;
+        protected Command<ThisState> command;
         abstract public void HandleUpdate();
         abstract public void HandleFixedUpdate();
 
@@ -32,6 +34,17 @@ abstract public class Context<ThisContext>: MonoBehaviour
             if (currInstanceCount > maxInstanceCount)
                 throw new ArgumentException("Too many instances for this state");
         }
+
+        protected abstract class Command<ThisState>
+        {
+            protected ThisState currState;
+            public Command(ThisState currState){
+                this.currState = currState;
+            }
+            public abstract void execute();
+
+        }
+
 
     }
     abstract public class StateKey//prevent public access to keys while allowing context to use keys
@@ -65,5 +78,3 @@ abstract public class Context<ThisContext>: MonoBehaviour
     }
 
 }
-
-

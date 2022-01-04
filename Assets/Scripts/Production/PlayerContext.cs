@@ -33,7 +33,7 @@ public class PlayerContext : Context<PlayerContext>
         currState.HandleFixedUpdate();
     }
 
-    protected class Standing: State
+    protected class Standing: State<Standing>
     {
         private Transform currPos;
         private Rigidbody2D rb;
@@ -57,11 +57,19 @@ public class PlayerContext : Context<PlayerContext>
 
         protected void Jump()
         {
-            Jumper player = new Jumper();
-            currContext.inairState.set_properties(player, 0f, player.calcInitialVelocityToJump());
-            currContext.transitionTo(currContext.inairState);
         }
 
+        protected class JumpCommand : Command<Standing>
+        {
+            JumpCommand(Standing s) : base(s) { }                
+            override public void execute()
+            {
+                Jumper player = new Jumper();
+                currState.currContext.inairState.set_properties(player, 0f, player.calcInitialVelocityToJump());
+                currState.currContext.transitionTo(currState.currContext.inairState);
+            }
+
+        }
         public override void HandleFixedUpdate()
         {
             
@@ -71,11 +79,17 @@ public class PlayerContext : Context<PlayerContext>
         {
             
         }
-
+        
+        
     }
 
     protected class Walking: State
     {
+
+        class JumpCommand
+        {
+
+        }
         private Vector2 pos;
         private Rigidbody2D rb;
 
