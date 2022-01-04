@@ -10,17 +10,13 @@ namespace PlayerContextNameSpace
     public partial class PlayerContext : Context
     {
         //hide member but keep open to access to nested
-        PlayerComponentContainer components;
+        private PlayerComponentContainer components;
         private void Start()
         {
             transitionTo(new Standing(this));
         }
 
-        class PlayerComponentContainer
-        {
-            public Transform transform;
-            public Rigidbody2D rigidbody2D;
-        }
+        private partial class PlayerComponentContainer { }
         public override void Update()
         {
             currState.HandleUpdate();
@@ -42,21 +38,10 @@ namespace PlayerContextNameSpace
 
         protected partial class Walking {
             protected partial class JumpCommand { }
-
         }
 
         protected partial class InAir { }
 
-        protected class PlayerStateKey : StateKey
-        {
-            public static PlayerStateKey
-                Standing = new PlayerStateKey(0),
-                Walking = new PlayerStateKey(1),
-                InAir = new PlayerStateKey(2);
-            public PlayerStateKey(int val) : base(val) { }
-
-
-        }
 
     }
 

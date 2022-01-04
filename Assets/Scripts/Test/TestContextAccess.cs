@@ -68,7 +68,7 @@ namespace Assets.Scripts.Test
     {
         public void test()
         {
-            TestContextAccess o;
+            //TestContextAccess o;
             //o.members;//ERROR: private interface and class  prevents outside access to members
             //o.members2//ERORR: private class prevents outside access
             //o.member3;//ERROR; private member access
