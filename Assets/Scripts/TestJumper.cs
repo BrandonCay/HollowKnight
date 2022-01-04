@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
+//using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-
+/* Need to figure out what this is for because I already have a testJumper
 [TestFixture]
 public class TestJumper
 {
@@ -35,3 +35,4 @@ public class TestJumper
     }
 
 }
+*/

@@ -1,12 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
-namespace Assets.Scripts.Production.PlayerContext.States
+namespace PlayerContextNameSpace
 {
-    class Walking
+    public partial class PlayerContext
     {
+        protected partial class Walking : PlayerState
+        {
+
+            private Vector2 pos;
+            private Rigidbody2D rb;
+
+            public Walking(PlayerContext currContext)
+            {
+
+            }
+            public override void HandleUpdate()
+            {
+
+            }
+
+            public override void HandleFixedUpdate()
+            {
+
+            }
+        }
+
     }
 }

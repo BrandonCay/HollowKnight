@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace PlayerContextNameSpace
 {
-    public partial class PlayerContext : Context
+    public partial class PlayerContext 
     {
         protected partial class Standing : PlayerState
         {
@@ -37,7 +37,12 @@ namespace PlayerContextNameSpace
                 }
 
             }
-            
+
+            public override void HandleFixedUpdate()
+            {
+            }
+
+
         }
     }
 }

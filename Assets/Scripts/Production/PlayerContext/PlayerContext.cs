@@ -31,155 +31,21 @@ namespace PlayerContextNameSpace
             currState.HandleFixedUpdate();
         }
 
-        protected abstract class PlayerState : State
+        protected abstract partial class PlayerState { }
+        protected partial class Standing 
         {
-            protected PlayerContext currContext;
-
-            public void set_currContext(PlayerContext newContext)
-            {
-                currContext = newContext;
-            }
-        }
-
-        protected partial class Standing : PlayerState
-        {
-            /*
-            private Transform currPos;
-            private Rigidbody2D rb;
-
-            public Standing(PlayerContext context)
-            {
-                set_currContext(context);
-                currPos = currContext.components.transform;
-                rb = currContext.components.rigidbody2D;
-            }
-
-
-            public override void HandleUpdate()
-            {
-                commandToExecute.execute();
-
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    commandToExecute = new JumpCommand(this);
-                }
-                else
-                {
-                    commandToExecute = new NoCommand(this);
-                }
-
-            }
-
-            protected abstract class PlayerCommand: Command
-            {
-                protected Standing currState;
-
-                public PlayerCommand(Standing newState)
-                {
-                    currState = newState;
-                }
-
-                abstract public void execute();
-            }
-
-            protected class NoCommand : PlayerCommand {
-                public NoCommand(Standing newState) : base(newState) { }
-                public override void execute()
-                {
-
-                }
-
-
-            }
-
-
-            protected class JumpCommand : PlayerCommand
-            {
-                public JumpCommand(Standing s):base(s) { }            
-
-                override public void execute()
-                {
-                    Jumper player = new Jumper();
-                    currState.currContext.transitionTo(new InAir(currState.currContext, new Jumper(), 0f, player.calcInitialVelocityToJump()));
-                }
-
-            }
-            public override void HandleFixedUpdate()
-            {
-
-            }        
-            */
+            protected abstract partial class PlayerCommand  { }
+            protected partial class NoCommand { }
+            protected partial class JumpCommand  { }
 
         }
 
-        protected class Walking : PlayerState
-        {
-
-            class JumpCommand
-            {
-
-            }
-            private Vector2 pos;
-            private Rigidbody2D rb;
-
-            public Walking(PlayerContext currContext)
-            {
-
-            }
-            public override void HandleUpdate()
-            {
-
-            }
-
-            public override void HandleFixedUpdate()
-            {
-
-            }
-        }
-
-        protected class InAir : PlayerState
-        {
-
-            private Rigidbody2D rb;
-            private Jumper player;
-            private Transform currPos;
-            private float currXvel, currYvel, gravityAcceleration;
-
-            public InAir(PlayerContext currContext)
-            {
-                this.currContext = currContext;
-                currPos = currContext.components.transform;
-                rb = currContext.components.rigidbody2D;
-                gravityAcceleration = -9.81f;
-            }
-
-            public InAir(PlayerContext currContext, Jumper player, float currXvel, float currYvel) : this(currContext)
-            {
-                this.player = player;
-                this.currXvel = currXvel;
-                this.currYvel = currYvel;
-                gravityAcceleration = -9.81f;
-            }
-
-            public override void HandleUpdate()
-            {
-
-            }
-
-            //need to create unittest
-            public override void HandleFixedUpdate()
-            {
-                currYvel = currYvel + gravityAcceleration * Time.fixedDeltaTime;
-
-                float currPosX = this.currPos.position.x, currPosY = this.currPos.position.y,
-                    nextPosX = currPosX + currXvel * Time.fixedDeltaTime, nextPosY = currPosY + currYvel * Time.fixedDeltaTime;
-
-                Vector2 positionAfterFrame = new Vector2(nextPosX, nextPosY);
-
-                rb.MovePosition(positionAfterFrame);
-            }
+        protected partial class Walking {
+            protected partial class JumpCommand { }
 
         }
+
+        protected partial class InAir { }
 
         protected class PlayerStateKey : StateKey
         {
