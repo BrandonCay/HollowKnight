@@ -16,7 +16,6 @@ namespace PlayerContextNameSpace
             transitionTo(new Standing(this));
         }
 
-        private partial class PlayerComponentContainer { }
         public override void Update()
         {
             currState.HandleUpdate();
@@ -26,7 +25,7 @@ namespace PlayerContextNameSpace
         {
             currState.HandleFixedUpdate();
         }
-
+        private partial class PlayerComponentContainer { }
         protected abstract partial class PlayerState { }
         protected partial class Standing 
         {
@@ -35,14 +34,10 @@ namespace PlayerContextNameSpace
             protected partial class JumpCommand  { }
 
         }
-
         protected partial class Walking {
             protected partial class JumpCommand { }
         }
 
         protected partial class InAir { }
-
-
     }
-
 }
