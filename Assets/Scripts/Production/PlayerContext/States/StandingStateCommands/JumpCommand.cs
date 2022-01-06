@@ -8,7 +8,7 @@ namespace PlayerContextNameSpace
 {
     public partial class PlayerContext
     {
-        protected partial class Standing  {
+        partial class Standing  {
             protected partial class JumpCommand : PlayerCommand
             {
                 public JumpCommand(Standing s) : base(s) { }

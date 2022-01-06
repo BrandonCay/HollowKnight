@@ -25,11 +25,12 @@ namespace PlayerContextNameSpace
         {
             currState.HandleFixedUpdate();
         }
+
         private partial class PlayerComponentContainer { }
-        protected abstract partial class PlayerState { }
-        protected partial class Standing 
+        protected internal abstract partial class PlayerState { }
+        protected internal partial class Standing
         {
-            protected abstract partial class PlayerCommand  { }
+            protected abstract partial class PlayerCommand { }
             protected partial class NoCommand { }
             protected partial class JumpCommand  { }
 
@@ -37,7 +38,6 @@ namespace PlayerContextNameSpace
         protected partial class Walking {
             protected partial class JumpCommand { }
         }
-
         protected partial class InAir { }
     }
 }

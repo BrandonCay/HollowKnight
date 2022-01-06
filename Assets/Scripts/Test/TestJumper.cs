@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 using NUnit.Framework;
+using PlayerContextNameSpace;
 
 [TestFixture]
 public class TestJumper
@@ -10,11 +11,14 @@ public class TestJumper
     Jumper player;
     float expectedVal;
 
+
+
     [SetUp]
     public void setUpTestJump()
     {
         player = new Jumper();
         expectedVal = 6.26f;
+        
     }
 
     [TearDown]

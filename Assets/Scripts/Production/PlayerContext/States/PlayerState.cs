@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PlayerContextNameSpace { 
     public partial class PlayerContext
     {
-        protected abstract partial class PlayerState: State
+        partial class PlayerState: State
         {
             protected PlayerContext currContext;
 

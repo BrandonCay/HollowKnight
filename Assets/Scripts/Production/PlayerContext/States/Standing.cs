@@ -10,7 +10,7 @@ namespace PlayerContextNameSpace
 {
     public partial class PlayerContext 
     {
-        protected partial class Standing : PlayerState
+        partial class Standing : PlayerState
         {
             private Transform currPos;
             private Rigidbody2D rb;

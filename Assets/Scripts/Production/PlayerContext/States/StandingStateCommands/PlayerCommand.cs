@@ -8,7 +8,7 @@ using UnityEngine;
 namespace PlayerContextNameSpace
 {
     public partial class PlayerContext { 
-        protected partial class Standing
+        partial class Standing
         {
             protected abstract partial class PlayerCommand : Command
             {
