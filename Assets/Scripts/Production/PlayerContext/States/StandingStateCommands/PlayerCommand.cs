@@ -10,7 +10,7 @@ namespace PlayerContextNameSpace
     public partial class PlayerContext { 
         partial class Standing
         {
-            protected abstract partial class PlayerCommand : Command
+            partial class PlayerCommand : Command
             {
                 protected Standing currState;
 

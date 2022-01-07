@@ -10,7 +10,7 @@ namespace PlayerContextNameSpace {
     {
         partial class Standing
         {
-            protected partial class NoCommand : PlayerCommand
+            partial class NoCommand : PlayerCommand
             {
                 public NoCommand(Standing newState) : base(newState) { }
                 public override void execute()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-/* Need to figure out what this is for because I already have a testJumper
+/* Need to figure out what this is for because I already have a testJumper; //NOTE: This one is for testing Context Jumper, need to move any contextJumper code here
 [TestFixture]
 public class TestJumper
 {

@@ -10,7 +10,7 @@ namespace PlayerContextNameSpace
     public partial class PlayerContext 
     {
 
-        protected partial class InAir : PlayerState
+        partial class InAir : PlayerState
         {
 
             private Rigidbody2D rb;

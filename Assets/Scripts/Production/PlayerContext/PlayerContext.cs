@@ -7,11 +7,12 @@ using UnityEngine;
 
 namespace PlayerContextNameSpace
 {
-    public partial class PlayerContext : Context
+    public internal partial class PlayerContext : Context
     {
         //hide member but keep open to access to nested
         private PlayerComponentContainer components;
-        private void Start()
+
+        public void Start()
         {
             transitionTo(new Standing(this));
         }
@@ -26,18 +27,18 @@ namespace PlayerContextNameSpace
             currState.HandleFixedUpdate();
         }
 
-        private partial class PlayerComponentContainer { }
+        internal partial class PlayerComponentContainer { }
         protected internal abstract partial class PlayerState { }
         protected internal partial class Standing
         {
-            protected abstract partial class PlayerCommand { }
-            protected partial class NoCommand { }
-            protected partial class JumpCommand  { }
+            protected internal abstract partial class PlayerCommand { }
+            protected internal partial class NoCommand { }
+            protected internal partial class JumpCommand  { }
 
         }
-        protected partial class Walking {
+        protected internal partial class Walking {
             protected partial class JumpCommand { }
         }
-        protected partial class InAir { }
+        protected internal partial class InAir { }
     }
 }
