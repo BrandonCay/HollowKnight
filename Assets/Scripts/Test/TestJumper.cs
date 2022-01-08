@@ -26,20 +26,34 @@ public class TestJumper
     private void setUpPlayer()
     {
 
-        player = new GameObject("Player");
-        player.AddComponent<Rigidbody2D>();
-        player.AddComponent<Transform>();
-        playerController = player.AddComponent<PlayerContext>();
-        player.SetActive(true);
+        player = GameObject.Instantiate(new GameObject());
+        var rb = player.gameObject.AddComponent<Rigidbody2D>();
+        playerController = player.gameObject.AddComponent<PlayerContext>();
+        playerController = player.gameObject.GetComponent<PlayerContext>();
+        SpriteRenderer sr = player.AddComponent<SpriteRenderer>();
+        sr.color = Color.blue;
+        var sprite = Resources.Load<Sprite>("Prefabs/SquareSprite");
+        Debug.Log(sprite);
+        sr.sprite = sprite;
+        Debug.Log($"sprite:{sr.sprite}");
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        Debug.Log( $"mat: {sr.material}");
+        player.transform.localScale = new Vector3(5, 5, 0);
+
+        /*
         player.transform.position = new Vector3(0, 0, 0);
+        Debug.Log(playerController);
+        playerController.setComponents();
         playerStanding = new PlayerContext.Standing(playerController);
+        playerController.currState = playerStanding; 
         playerController.currState.set_command(new PlayerContext.Standing.JumpCommand(playerStanding));
+        player.SetActive(true);*/
     }
 
     private void setUpEnv()
     {
         Time.timeScale = customTimeScale;
-
     }
 
     [TearDown]
@@ -58,13 +72,18 @@ public class TestJumper
     }
 
     [UnityTest]
-    public IEnumerable testPlayerContextJump()
+    public IEnumerator testPlayerContextJump()
     {
 
+        Debug.Log(playerController.transform.position);
 
         playerController.currState.commandToExecute.execute();
 
         yield return new WaitForSeconds(3f);
+
+        Debug.Log(playerController.transform.position);
+
+        Assert.AreEqual(1f, 1.1f, 1f);
     }
 
     class TestMemberContainers

@@ -2,7 +2,7 @@
     "name": "Production",
     "rootNamespace": "",
     "references": [
-        ""
+        "PlayerContext"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

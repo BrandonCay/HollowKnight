@@ -11,7 +11,7 @@ abstract public class Context: MonoBehaviour
 
     abstract public void Update();
     abstract public void FixedUpdate();
-
+     
     public void transitionTo(in State currState)
     {
         this.currState = currState;

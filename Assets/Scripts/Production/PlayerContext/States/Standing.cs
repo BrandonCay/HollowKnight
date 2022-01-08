@@ -17,9 +17,16 @@ namespace PlayerContextNameSpace
 
             public Standing(PlayerContext context)
             {
+                Debug.Log(context);
                 set_currContext(context);
+                Debug.Log($"set: {currContext}");
+                currContext = context;
+                Debug.Log($"assign: {currContext}");
+                Debug.Log(currContext.components);
+                Debug.Log(currContext.components.transform);
                 currPos = currContext.components.transform;
                 rb = currContext.components.rigidbody2D;
+                commandToExecute = new NoCommand(this);
             }
 
 
@@ -30,6 +37,9 @@ namespace PlayerContextNameSpace
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     commandToExecute = new JumpCommand(this);
+                }else if(commandToExecute is NoCommand)
+                {
+
                 }
                 else
                 {

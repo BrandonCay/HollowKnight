@@ -14,7 +14,15 @@ namespace PlayerContextNameSpace
 
         public void Start()
         {
+            setComponents();
             transitionTo(new Standing(this));
+        }
+
+        protected internal void setComponents()
+        {
+            components = new PlayerComponentContainer();
+            components.transform = GetComponent<Transform>();
+            components.rigidbody2D = GetComponent<Rigidbody2D>();
         }
 
         public override void Update()
