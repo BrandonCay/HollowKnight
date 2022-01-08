@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PlayerContextNameSpace
 {
-    public internal partial class PlayerContext : Context
+    public partial class PlayerContext : Context
     {
         //hide member but keep open to access to nested
         private PlayerComponentContainer components;
@@ -28,17 +28,18 @@ namespace PlayerContextNameSpace
         }
 
         internal partial class PlayerComponentContainer { }
-        protected internal abstract partial class PlayerState { }
-        protected internal partial class Standing
+        protected internal abstract partial class PlayerState : State { }
+        protected internal partial class Standing : PlayerState
         {
-            protected internal abstract partial class PlayerCommand { }
-            protected internal partial class NoCommand { }
-            protected internal partial class JumpCommand  { }
+            protected internal abstract partial class PlayerCommand : Command  { }
+            protected internal partial class NoCommand : PlayerCommand { }
+            protected internal partial class JumpCommand : PlayerCommand { }
 
         }
-        protected internal partial class Walking {
-            protected partial class JumpCommand { }
+        protected internal partial class Walking : PlayerState
+        {
+            protected partial class JumpCommand  { }
         }
-        protected internal partial class InAir { }
+        protected internal partial class InAir : PlayerState { }
     }
 }

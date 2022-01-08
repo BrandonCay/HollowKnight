@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace PlayerContextNameSpace
 {
-    public partial class PlayerContext 
+    partial class PlayerContext 
     {
-        partial class Standing : PlayerState
+        partial class Standing
         {
             private Transform currPos;
             private Rigidbody2D rb;

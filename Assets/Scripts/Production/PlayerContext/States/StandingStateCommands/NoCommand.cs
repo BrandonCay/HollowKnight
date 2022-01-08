@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace PlayerContextNameSpace {
 
-    public partial class PlayerContext
+    partial class PlayerContext
     {
         partial class Standing
         {
-            partial class NoCommand : PlayerCommand
+            partial class NoCommand
             {
                 public NoCommand(Standing newState) : base(newState) { }
                 public override void execute()
                 {
 
                 }
-
             }
         }
     }

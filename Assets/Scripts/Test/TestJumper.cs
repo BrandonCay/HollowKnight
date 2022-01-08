@@ -13,6 +13,7 @@ public class TestJumper
     GameObject player;
     PlayerContext playerController;
     const float customTimeScale = 2f;
+    PlayerContext.Standing playerStanding;
 
     [SetUp]
     public void setUpTestJump()
@@ -24,18 +25,21 @@ public class TestJumper
 
     private void setUpPlayer()
     {
+
         player = new GameObject("Player");
         player.AddComponent<Rigidbody2D>();
         player.AddComponent<Transform>();
         playerController = player.AddComponent<PlayerContext>();
         player.SetActive(true);
         player.transform.position = new Vector3(0, 0, 0);
-
+        playerStanding = new PlayerContext.Standing(playerController);
+        playerController.currState.set_command(new PlayerContext.Standing.JumpCommand(playerStanding));
     }
 
     private void setUpEnv()
     {
-        
+        Time.timeScale = customTimeScale;
+
     }
 
     [TearDown]
@@ -56,8 +60,9 @@ public class TestJumper
     [UnityTest]
     public IEnumerable testPlayerContextJump()
     {
-        Time.timeScale = customTimeScale;
-        playerController.currState.set_command(new PlayerContext.Standing.JumpCommand(playerController.currState));        
+
+
+        playerController.currState.commandToExecute.execute();
 
         yield return new WaitForSeconds(3f);
     }

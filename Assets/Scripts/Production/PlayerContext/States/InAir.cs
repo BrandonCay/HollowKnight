@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PlayerContextNameSpace
 {
-    public partial class PlayerContext 
+    partial class PlayerContext 
     {
 
         partial class InAir : PlayerState

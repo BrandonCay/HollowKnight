@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace PlayerContextNameSpace
 {
-    public partial class PlayerContext
+    partial class PlayerContext
     {
-        protected partial class Walking : PlayerState
+        partial class Walking : PlayerState
         {
 
             private Vector2 pos;
