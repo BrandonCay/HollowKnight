@@ -77,13 +77,16 @@ public class TestJumper
 
         Debug.Log(playerController.transform.position);
 
+
+        playerStanding = new PlayerContext.Standing(playerController);
+        playerController.currState.set_command(new PlayerContext.Standing.JumpCommand(playerStanding));
         playerController.currState.commandToExecute.execute();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         Debug.Log(playerController.transform.position);
 
-        Assert.AreEqual(1f, 1.1f, 1f);
+        Assert.AreEqual(player.transform.position.y,  1f, 0.01);
     }
 
     class TestMemberContainers
