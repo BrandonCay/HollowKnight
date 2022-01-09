@@ -20,9 +20,11 @@ public class TestJumper
     [SetUp]
     public void setUpTestJump()
     {
+        Debug.Log($"runp1: {player} ");
         setUpEnv();
         setUpPlayer();
         expectedVal = 1f;
+        Debug.Log($"runp2: {player} ");
     }
 
     private void setUpPlayer()
@@ -85,12 +87,6 @@ public class TestJumper
         Assert.AreEqual(expectedVal, player.transform.position.y , 0.05);
     }
 
-    [Test]
-    public void testJump()
-    {
-        float initialVel = jPlayer.calcInitialVelocityToJump();
-        Assert.AreEqual(expectedVal, initialVel, 0.01);
-    }
 
     class TestMemberContainers
     {
