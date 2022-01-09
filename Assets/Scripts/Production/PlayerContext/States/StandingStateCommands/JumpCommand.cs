@@ -16,7 +16,8 @@ namespace PlayerContextNameSpace
                 override public void execute()
                 {
                     Jumper player = new Jumper();
-                    currState.currContext.transitionTo(new InAir(currState.currContext, new Jumper(), 0f, player.calcInitialVelocityToJump()));
+                    const float jumpDistance = 1f;
+                    currState.currContext.transitionTo(new InAir(currState.currContext, new Jumper(jumpDistance), 0f, player.calcInitialVelocityToJump()));
                 }
             }
         }

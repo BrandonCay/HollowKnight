@@ -12,7 +12,9 @@ public class TestJumper
     float expectedVal;
     GameObject player;
     PlayerContext playerController;
-    const float customTimeScale = 2f;
+    const float customTimeScale = 4f;
+    const float timeToToReachExpectedVal = .452f;
+    const float tolerance = .05f;
     PlayerContext.Standing playerStanding;
 
     [SetUp]
@@ -20,7 +22,7 @@ public class TestJumper
     {
         setUpEnv();
         setUpPlayer();
-        expectedVal = 6.26f;
+        expectedVal = 1f;
     }
 
     private void setUpPlayer()
@@ -64,12 +66,6 @@ public class TestJumper
         expectedVal = 0f;
     }
 
-    [Test]
-    public void testJump()
-    {
-        float initialVel = jPlayer.calcInitialVelocityToJump();
-        Assert.AreEqual(expectedVal , initialVel, 0.01);
-    }
 
     [UnityTest]
     public IEnumerator testPlayerContextJump()
@@ -82,11 +78,18 @@ public class TestJumper
         playerController.currState.set_command(new PlayerContext.Standing.JumpCommand(playerStanding));
         playerController.currState.commandToExecute.execute();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(timeToToReachExpectedVal);
 
         Debug.Log(playerController.transform.position);
 
-        Assert.AreEqual(player.transform.position.y,  1f, 0.01);
+        Assert.AreEqual(expectedVal, player.transform.position.y , 0.05);
+    }
+
+    [Test]
+    public void testJump()
+    {
+        float initialVel = jPlayer.calcInitialVelocityToJump();
+        Assert.AreEqual(expectedVal, initialVel, 0.01);
     }
 
     class TestMemberContainers

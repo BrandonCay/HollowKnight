@@ -23,7 +23,7 @@ namespace PlayerContextNameSpace
                 this.currContext = currContext;
                 currPos = currContext.components.transform;
                 rb = currContext.components.rigidbody2D;
-                gravityAcceleration = -9.81f;
+                gravityAcceleration = Constants.Gravity.get_accelerationDueTogravity();
             }
 
             public InAir(PlayerContext currContext, Jumper player, float currXvel, float currYvel) : this(currContext)
@@ -31,7 +31,6 @@ namespace PlayerContextNameSpace
                 this.player = player;
                 this.currXvel = currXvel;
                 this.currYvel = currYvel;
-                gravityAcceleration = -9.81f;
             }
 
             public override void HandleUpdate()

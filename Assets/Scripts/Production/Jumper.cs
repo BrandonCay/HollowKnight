@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Jumper
 {
-    float maxHeight, acceleration;
+    float jumpDistance, acceleration;
 
     public Jumper()
     {
-        maxHeight = 2f;
-        acceleration = -9.81f;
+        jumpDistance = 1f;
+        acceleration = Constants.Gravity.get_accelerationDueTogravity();
     }
 
-    public Jumper(int maxHeight, float acceleration)
+    public Jumper(float jumpDistance)
     {
-        this.maxHeight = maxHeight;
-        this.acceleration = acceleration; 
+        this.jumpDistance = jumpDistance;
+        this.acceleration = Constants.Gravity.get_accelerationDueTogravity();
     }
 
     public float calcInitialVelocityToJump()
     {
-        return (Mathf.Sqrt(maxHeight * -2f * acceleration));
+        return (Mathf.Sqrt(jumpDistance * -2f * acceleration));
     }
 
 }

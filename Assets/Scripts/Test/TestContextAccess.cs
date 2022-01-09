@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//do not run. IDE tests access and I write
 namespace Assets.Scripts.Test
 {
     public class TestContextAccess
