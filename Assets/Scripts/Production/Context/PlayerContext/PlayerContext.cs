@@ -42,6 +42,8 @@ namespace PlayerContextNameSpace
             protected internal abstract partial class PlayerCommand : Command  { }
             protected internal partial class NoCommand : PlayerCommand { }
             protected internal partial class JumpCommand : PlayerCommand { }
+            protected internal partial class WalkCommand : PlayerCommand { }
+            protected internal partial class DashCommand : PlayerCommand { }
 
         }
         protected internal partial class Walking : PlayerState
@@ -49,5 +51,8 @@ namespace PlayerContextNameSpace
             protected partial class JumpCommand  { }
         }
         protected internal partial class InAir : PlayerState { }
+        protected internal partial class Dashing : PlayerState { }
+
+        protected internal partial class Directions { }
     }
 }

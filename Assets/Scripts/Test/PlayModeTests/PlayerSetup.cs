@@ -23,12 +23,8 @@ abstract public class PlayerSetup
         SpriteRenderer sr = player.AddComponent<SpriteRenderer>();
         sr.color = Color.blue;
         var sprite = Resources.Load<Sprite>("Prefabs/SquareSprite");
-        Debug.Log(sprite);
         sr.sprite = sprite;
-        Debug.Log($"sprite:{sr.sprite}");
         rb.bodyType = RigidbodyType2D.Kinematic;
-
-        Debug.Log($"mat: {sr.material}");
         player.transform.localScale = new Vector3(5, 5, 0);
     }
 

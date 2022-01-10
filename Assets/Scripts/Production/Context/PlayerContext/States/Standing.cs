@@ -17,13 +17,8 @@ namespace PlayerContextNameSpace
 
             public Standing(PlayerContext context)
             {
-                Debug.Log(context);
                 set_currContext(context);
-                Debug.Log($"set: {currContext}");
                 currContext = context;
-                Debug.Log($"assign: {currContext}");
-                Debug.Log(currContext.components);
-                Debug.Log(currContext.components.transform);
                 currPos = currContext.components.transform;
                 rb = currContext.components.rigidbody2D;
                 commandToExecute = new NoCommand(this);
@@ -34,12 +29,18 @@ namespace PlayerContextNameSpace
             {
                 commandToExecute.execute();
 
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(Keys.Jump))
                 {
                     commandToExecute = new JumpCommand(this);
-                }else if(commandToExecute is NoCommand)
+                } else if (Input.GetKeyDown(Keys.WalkLeft)) {
+                    commandToExecute = new WalkCommand(this, PlayerContext.Directions.Left);
+                } else if (Input.GetKeyDown(Keys.WalkRight))
                 {
-
+                    commandToExecute = new WalkCommand(this, PlayerContext.Directions.Right);
+                }
+                 else if (commandToExecute is NoCommand)
+                {
+                    
                 }
                 else
                 {
@@ -50,6 +51,23 @@ namespace PlayerContextNameSpace
 
             public override void HandleFixedUpdate()
             {
+            }
+
+            protected static class Keys
+            {
+                static public KeyCode
+                    Jump = KeyCode.Space,
+                    WalkLeft = KeyCode.A,
+                    WalkRight = KeyCode.D,
+                    LookDown = KeyCode.S,
+                    LookUp = KeyCode.W,
+                    Dash = KeyCode.LeftShift,
+                    AttackLeft = KeyCode.LeftArrow,
+                    AttackRight = KeyCode.RightArrow,
+                    AttackUp = KeyCode.UpArrow,
+                    AttackDown = KeyCode.DownArrow,
+                    QuickCast = KeyCode.LeftControl,
+                    Focus = KeyCode.Q;
             }
 
 
