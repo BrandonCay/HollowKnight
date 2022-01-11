@@ -5,10 +5,11 @@ namespace PlayerContextNameSpace {
     {
         partial class Dashing
         {
-            float xSpeed, xDirection, maxXdistance, originalXPosition;
+            float xSpeed, maxXdistance, currDistanceTraveled;
+            int xDirection;
             Transform transform;
             Rigidbody2D rb; 
-            public Dashing(PlayerContext currContext,float xWalkSpeed, float xDirection)
+            public Dashing(PlayerContext currContext,float xWalkSpeed, int xDirection)
             {
                 set_currContext(currContext);
                 float dashSpeedFactor = 3f;
@@ -17,22 +18,50 @@ namespace PlayerContextNameSpace {
                 maxXdistance = 3f;
                 transform = currContext.components.transform;
                 rb = currContext.components.rigidbody2D;
-                originalXPosition = transform.position.x;
+                currDistanceTraveled = 0f;
+                set_command(new NoCommand(this));
             }
 
             public override void HandleUpdate()
             {
-                if(originalXPosition - transform.position.x > maxXdistance)
+                commandToExecute.execute();
+                if(didPlayerTravelFullDashLength())
                 {
-                    //switch to Standing if on ground or swithc to InAir if inair
+                    if (isOnGround())
+                        currContext.transitionTo(new Standing(this.currContext));
+
+                }else if (isPlayerHittingAWall())
+                {
+                    if (!isOnGround())
+                    {
+                        //wall slide state
+                    }
                 }
+
+            }
+
+            private bool didPlayerTravelFullDashLength()
+            {
+                return currDistanceTraveled > maxXdistance;
+            }
+
+            private bool isOnGround()
+            {
+                return true;
+            }
+            private bool isPlayerHittingAWall()
+            {
+                return false;
             }
             public override void HandleFixedUpdate()
             {
-                float xVel = xSpeed * xDirection;
+                float xVel = xSpeed * xDirection, xDisplacement = xVel * Time.fixedDeltaTime;
+               
+                currDistanceTraveled = currDistanceTraveled +  Mathf.Abs(xDisplacement);
+                
                 Vector3
                     oldPos = transform.position,
-                    displacement = new Vector3(xVel * Time.fixedDeltaTime, 0f, 0f),
+                    displacement = new Vector3(xDisplacement, 0f, 0f),
                     newPos = oldPos + displacement;
                 rb.MovePosition(newPos);
             }

@@ -11,14 +11,16 @@ namespace PlayerContextNameSpace
     {
         partial class DashCommand
         {
-            
+
+            int xDirection;
             public DashCommand (Standing newState, int xDirection):base(newState)
             {
-                
+                    this.xDirection = xDirection;
             }
             override public void execute()
             {
-                    currState.currContext.transitionTo(new Dashing(currState.currContext, )); 
+                    float xWalkSpeed = 1f;
+                    currState.currContext.transitionTo(new Dashing(currState.currContext, xWalkSpeed, xDirection)); 
             }
                 
         }

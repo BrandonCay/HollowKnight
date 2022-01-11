@@ -37,11 +37,18 @@ namespace PlayerContextNameSpace
                 } else if (Input.GetKeyDown(Keys.WalkRight))
                 {
                     commandToExecute = new WalkCommand(this, PlayerContext.Directions.Right);
+                } else if (Input.GetKeyDown(Keys.Dash))
+                {
+                    if (Input.GetKey(Keys.WalkRight))
+                    {
+                        commandToExecute = new DashCommand(this, Directions.Right);
+                    }else if (Input.GetKey(Keys.WalkLeft))
+                    {
+                        commandToExecute = new DashCommand(this, Directions.Left);
+                    }
                 }
                  else if (commandToExecute is NoCommand)
-                {
-                    
-                }
+                {}
                 else
                 {
                     commandToExecute = new NoCommand(this);

@@ -36,6 +36,7 @@ namespace PlayerContextNameSpace
         }
 
         internal partial class PlayerComponentContainer { }
+        internal static partial class PlayerConstants { }
         protected internal abstract partial class PlayerState : State { }
         protected internal partial class Standing : PlayerState
         {
@@ -44,15 +45,20 @@ namespace PlayerContextNameSpace
             protected internal partial class JumpCommand : PlayerCommand { }
             protected internal partial class WalkCommand : PlayerCommand { }
             protected internal partial class DashCommand : PlayerCommand { }
-
+            protected internal partial class CastingCommand : PlayerCommand { }
         }
         protected internal partial class Walking : PlayerState
         {
             protected partial class JumpCommand  { }
         }
-        protected internal partial class InAir : PlayerState { }
-        protected internal partial class Dashing : PlayerState { }
+        protected internal partial class InAir : PlayerState {}
+        protected internal partial class Dashing : PlayerState {
+            protected internal abstract partial class PlayerCommand : Command { }
+            protected internal partial class NoCommand : PlayerCommand { }
+        }
 
+        protected partial interface Spells { }
+        protected internal partial class VengefulSpirit : Spells { }
         protected internal partial class Directions { }
     }
 }
